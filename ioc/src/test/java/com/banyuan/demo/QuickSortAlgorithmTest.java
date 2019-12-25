@@ -1,5 +1,6 @@
 package com.banyuan.demo;
 
+import com.banyuan.ioc.basic.QuickSortAlgorithm;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
