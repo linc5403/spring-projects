@@ -16,5 +16,4 @@ public class ScopeApplication {
         System.out.println(personDao2);
         System.out.println(personDao2.getJdbcConnection());
     }
-
 }

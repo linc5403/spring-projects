@@ -8,15 +8,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class BinarySearchImpl {
-    @Qualifier("quick")
-    @Autowired
     private SortAlgorithm sortAlgorithm;
 
-/*
+    @Autowired
     public BinarySearchImpl(@Qualifier("quick") SortAlgorithm sortAlgorithm) {
         this.sortAlgorithm = sortAlgorithm;
     }
-*/
 
     /*    public BinarySearchImpl(@Qualifier("quick") SortAlgorithm sortAlgorithm) {
         //public BinarySearchImpl(@Qualifier("quickSort") SortAlgorithm sortAlgorithm) {

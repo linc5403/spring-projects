@@ -17,14 +17,17 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 public class MyLog {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Pointcut("@annotation(com.linchuan.aop.Loggable)")
     public void loggableMethods() {};
+
 //  @Before("execution(public * com.linchuan.aop.BasicController.*(..))")
     @Before(value = "loggableMethods()")
     public void logSomeThing(JoinPoint joinPoint) {
         Object[] tos = joinPoint.getArgs();
         logger.info(joinPoint.getSignature().toString());
-        logger.info(tos[0].toString());
+        if (tos.length > 0)
+            logger.info(tos[0].toString());
     }
 
     @AfterReturning(value = "loggableMethods()", returning = "obj")
