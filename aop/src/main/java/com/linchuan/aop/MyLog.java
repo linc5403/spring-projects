@@ -21,12 +21,12 @@ public class MyLog {
     @Pointcut("@annotation(com.linchuan.aop.Loggable)")
     public void loggableMethods() {};
 
-//  @Before("execution(public * com.linchuan.aop.BasicController.*(..))")
+    // @Before("execution(public * com.linchuan.aop.BasicController.*(..))")
     @Before(value = "loggableMethods()")
     public void logSomeThing(JoinPoint joinPoint) {
         Object[] tos = joinPoint.getArgs();
         logger.info(joinPoint.getSignature().toString());
-        if (tos.length > 0)
+        if (tos.length > 0 && tos[0] != null)
             logger.info(tos[0].toString());
     }
 

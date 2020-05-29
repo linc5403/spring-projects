@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
-//@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+@Scope("session")
 public class JdbcConnection {
     public JdbcConnection() {
         System.out.println("JDBC Connection");
