@@ -21,7 +21,9 @@ public class Receiver {
 
     @RabbitListener(queues = "spring-boot")
     public void receiveMessage(String mail, Channel channel, Message message) throws InterruptedException, IOException {
-        // 三个参数, 第一个表示发送方发送的消息, 第二个为channel,发送ack的时候用,第三个message的属性中包含该消息的tag,也是用于ACK
+        // 三个参数, 第一个表示发送方发送的消息,
+        // 第二个为channel,发送ack的时候用,
+        // 第三个message的属性中包含该消息的tag,也是用于ACK
         MailMessage mailBody = gson.fromJson(mail, MailMessage.class);
 
         for (int i = 0; i < 10; i++) {
