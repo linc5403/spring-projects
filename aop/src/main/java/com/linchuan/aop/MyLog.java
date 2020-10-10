@@ -1,10 +1,8 @@
 package com.linchuan.aop;
 
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -28,6 +26,14 @@ public class MyLog {
         logger.info(joinPoint.getSignature().toString());
         if (tos.length > 0 && tos[0] != null)
             logger.info(tos[0].toString());
+    }
+
+    @Around(value = "loggableMethods()")
+    public Object logAround(ProceedingJoinPoint pjp) throws Throwable {
+        System.out.println("Before");
+        Object rlt = pjp.proceed();
+        System.out.println("After");
+        return rlt;
     }
 
     @AfterReturning(value = "loggableMethods()", returning = "obj")
