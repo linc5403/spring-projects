@@ -30,9 +30,9 @@ public class MyLog {
 
     @Around(value = "loggableMethods()")
     public Object logAround(ProceedingJoinPoint pjp) throws Throwable {
-        System.out.println("Before");
+        System.out.println("Before in Around");
         Object rlt = pjp.proceed();
-        System.out.println("After");
+        System.out.println("After in Around");
         return rlt;
     }
 
