@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.linchuan.cache.dao.BlogDao">
+    <select id="findAllBlogs" resultType="com.linchuan.cache.bean.Blog">
+        select * from blog order by `id` desc;
+    </select>
+    <select id="findBlogById" resultType="com.linchuan.cache.bean.Blog">
+        select * from blog where `id` = ${id}
+    </select>
+    <update id="updateBlog" parameterType="com.linchuan.cache.bean.Blog">
+        update blog set content=#{content}, title=#{title} where `id`=#{id}
+    </update>
+    <insert id="addBlog" parameterType="com.linchuan.cache.bean.Blog">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO blog (title, content, user_id)
+        VALUES
+        (#{title}, #{content}, #{userId})
+    </insert>
+</mapper>
