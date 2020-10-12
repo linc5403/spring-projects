@@ -7,7 +7,9 @@ import com.linchuan.cache.bean.Blog;
 import com.linchuan.cache.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,7 +47,14 @@ public class BlogController {
         return rlt;
     }
 
-    @CacheEvict(value = "blog", key = "#id")
+    // @CacheEvict(value = "blog", key="#id" )
+    // @CacheEvict(value = {"blog", "blogs"}, key = "#id", allEntries = true)
+    @Caching(
+        evict = {
+            @CacheEvict(value = "blogs", allEntries = true),
+            @CacheEvict(value = "blog", key = "#id")
+        }
+    )
     @PutMapping("/blog/{id}")
     public ObjectNode putBlog(@PathVariable Integer id,
                               @RequestParam String title,
@@ -71,6 +80,7 @@ public class BlogController {
     @Cacheable("blogs")
     public ObjectNode getBlogs() {
         List<Blog> blogs =  blogService.findBlogs(true, 0);
+        // return blogs;
 
         System.out.println("using blogService to process!!!!");
         ObjectNode rlt = objectMapper.createObjectNode();
