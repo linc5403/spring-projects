@@ -1,5 +1,6 @@
 package com.linchuan.cache.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -42,7 +43,7 @@ public class BlogController {
         } else {
             rlt.put("code", 0);
             rlt.put("message", "ok");
-            rlt.put("blog", String.valueOf(blogs.get(0)));
+            rlt.putPOJO("blog", blogs.get(0));
         }
         return rlt;
     }
