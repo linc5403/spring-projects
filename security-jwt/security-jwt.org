@@ -1,0 +1,29 @@
+* JWT
+** 在线解析
+   https://jwt.io/
+
+** JWT的结构
+
+   *HEADER和PAYLOAD都是可以解析出来的,所以不要放密码之类的东西*
+
+   [[file:./img/63_5-min.jpeg]]
+
+   [[file:./img/63_6-min.jpeg]]
+
+* Security + JWT
+** 业务流程
+       [[file:./img/62-12-min.jpeg]]
+
+** 生成Token
+     [[file:./img/62-2-min.jpeg]]
+
+** 认证管理(Security的功能)
+   [[file:./img/62-11-min.jpeg]]
+** 验证Token
+    [[file:./img/62-3-min.jpeg]]
+
+** Token刷新的流程
+
+   [[file:./img/series-7-1-min.jpeg]]
+
+** Token如何失效??

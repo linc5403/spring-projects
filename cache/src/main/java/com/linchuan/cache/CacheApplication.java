@@ -3,17 +3,19 @@ package com.linchuan.cache;
 import com.linchuan.cache.bean.Blog;
 import com.linchuan.cache.dao.BlogDao;
 import com.linchuan.cache.service.BlogService;
+import com.linchuan.cache.service.RedisService;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ApplicationContext;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.List;
 
 @SpringBootApplication
 @MapperScan("com.linchuan.cache")
-@EnableCaching
+//@EnableCaching
 public class CacheApplication {
 	public static void main(String[] args) {
 		ApplicationContext context = SpringApplication.run(CacheApplication.class, args);
@@ -23,6 +25,8 @@ public class CacheApplication {
 //        BlogService blogService = context.getBean(BlogService.class);
 //        List<Blog> blogs = blogService.findBlogs(true);
 //        System.out.println(blogs);
+        RedisService service = context.getBean(RedisService.class);
+        service.test();
 	}
 
 }

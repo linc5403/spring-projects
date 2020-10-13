@@ -1,0 +1,26 @@
+* AMQP
+** Advanced Message Queuing Protocol
+** 组成部分
+   - Producers
+   - Broker
+   - Consumers
+** 好处
+   消息解耦, 良好的可扩展性
+
+* RabbitMQ组件
+
+  [[file:./img/exchanges-bidings-routing-keys.png]]
+  [[file:./img/exchanges-topic-fanout-direct.png]]
+
+* 场景
+** 单收(Direct)
+** 所有的都收(Fanout)
+** 指定那些人收(Topic)
+** 如何确保消息被消费成功(ACK)
+
+
+
+https://www.cloudamqp.com/blog/2015-09-03-part4-rabbitmq-for-beginners-exchanges-routing-keys-bindings.html
+
+https://www.cnblogs.com/luxiaoxun/p/3918054.html
+  

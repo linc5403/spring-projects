@@ -19,8 +19,10 @@ public class Recv {
 
         DeliverCallback deliverCallback = (consumerTag, delivery) -> {
             String message = new String(delivery.getBody(), "UTF-8");
+            long deliveryTag =  delivery.getEnvelope().getDeliveryTag();
             System.out.println(" [x] Received '" + message + "'");
+            channel.basicAck(deliveryTag, false);
         };
-        channel.basicConsume(QUEUE_NAME, true, deliverCallback, consumerTag -> { });
+        channel.basicConsume(QUEUE_NAME, false, deliverCallback, consumerTag -> { });
     }
 }
