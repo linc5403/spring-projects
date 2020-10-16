@@ -1,3 +1,142 @@
+* Security
+  参考资料:
+
+  0. Spring Security官方文档
+
+     https://docs.spring.io/spring-security/site/docs/current/reference/html5/
+
+  1. 动态URL权限
+
+     https://segmentfault.com/a/1190000010672041
+
+  2. AccessDecisionManager组件介绍
+
+     https://juejin.im/post/6844903828769210375
+
+  3. 自定义异常处理
+
+     https://blog.csdn.net/jkjkjkll/article/details/79975975
+
+  4. Security + JWT
+     
+     https://www.javainuse.com/spring/boot-jwt
+
+     https://blog.csdn.net/qq_38579100/article/details/108655008
+
+     https://www.jianshu.com/p/5b9f1f4de88d
+
+
+** Spring Security 架构
+
+*** Spring Security基本原理   
+
+    Spring Security所处位置:
+
+    [[file:./img/overview.png]]
+
+
+       [[file:./img/A310331_2_En_4_Fig10_HTML.jpg]]
+
+    - 核心组件
+      
+      - SecurityContextHolder
+
+	提供对 SecurityContext 的访问，底层封装了 ThreadLocal，使其管理的对象（SecurityContext ）存储在当前线程上；
+
+      - SecurityContext
+
+	持有 Authentication 对象和其他可能需要的信息；
+	
+      - AuthenticationManager 
+	
+        其中可以包含多个AuthenticationProvider；
+
+      - ProviderManager 
+	
+        对象为 AuthenticationManager 接口的实现类；
+
+      - AuthenticationProvider
+
+	主要用来进行认证操作的类 调用其中的 authenticate() 方法去进行认证操作；
+
+      - Authentication
+
+	Spring Security 方式的认证主体；
+
+      - GrantedAuthority
+
+	对认证主题的应用层面的授权，含当前用户的权限信息，通常使用角色表示;
+
+      - UserDetails
+
+	构建Authentication对象必须的信息，可以自定义，可能需要访问DB得到；
+
+      - UserDetailsService
+
+	通过username构建UserDetails对象，通过loadUserByUsername根据userName获取UserDetail对象 （可以在这里基于自身业务进行自定义的实现 如通过数据库，xml,缓存获取等）。
+
+
+
+   
+    [[file:./img/A310331_2_En_2_Fig3_HTML.jpg]]
+  
+    [[file:./img/A310331_2_En_4_Fig2_HTML.jpg]]
+
+*** 三个重要的模块
+
+   [[file:./img/Selection_010.png]]
+
+**** 认证
+     [[file:./img/authen-1.png]]
+
+     [[file:./img/authen-2.png]]
+
+     [[file:./img/authen-3.png]]
+
+     [[file:./img/authen-41.png]]
+
+     [[file:./img/authen-5.png]]
+
+     [[file:./img/authen-6.png]]
+
+     [[file:./img/authen-7.png]]
+
+     [[file:./img/authen-8.png]]
+
+     [[file:./img/authen-9.png]]
+
+     
+
+
+
+**** 授权
+
+     [[file:./img/author-1.png]]
+
+     [[file:./img/author-2.png]]
+
+     [[file:./img/author-3.png]]
+
+     [[file:./img/author-4.png]]
+
+     [[file:./img/author-5.png]]
+
+     [[file:./img/author-6.png]]
+
+     [[file:./img/author-7.png]]
+
+**** 异常处理
+
+     [[file:./img/exception-1.png]]
+
+     [[file:./img/exception-2.png]]
+
+     [[file:./img/exception-3.png]]
+
+     [[file:./img/exception-4.png]]
+
+     [[file:./img/exception-5.png]]
+
 * JWT
 ** 在线解析
    https://jwt.io/
