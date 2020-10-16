@@ -1,23 +1,23 @@
 * Security
   参考资料:
 
-  0. Spring Security官方文档
+  1. Spring Security官方文档
 
      https://docs.spring.io/spring-security/site/docs/current/reference/html5/
 
-  1. 动态URL权限
+  2. 动态URL权限
 
      https://segmentfault.com/a/1190000010672041
 
-  2. AccessDecisionManager组件介绍
+  3. AccessDecisionManager组件介绍
 
      https://juejin.im/post/6844903828769210375
 
-  3. 自定义异常处理
+  4. 自定义异常处理
 
      https://blog.csdn.net/jkjkjkll/article/details/79975975
 
-  4. Security + JWT
+  5. Security + JWT
      
      https://www.javainuse.com/spring/boot-jwt
 
@@ -25,6 +25,9 @@
 
      https://www.jianshu.com/p/5b9f1f4de88d
 
+  5. Video
+     
+     https://youtu.be/8rnOsF3RVQc
 
 ** Spring Security 架构
 
@@ -104,6 +107,8 @@
      [[file:./img/authen-8.png]]
 
      [[file:./img/authen-9.png]]
+
+     [[file:./img/authen-10.png]]
 
      
 
