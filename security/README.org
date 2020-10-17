@@ -113,7 +113,6 @@
      
 
 
-
 **** 授权
 
      [[file:./img/author-1.png]]
@@ -171,3 +170,57 @@
    [[file:./img/series-7-1-min.jpeg]]
 
 ** Token如何失效??
+
+* 单点登录
+
+** 一个用户只能在一个客户端中登录(类似QQ)
+
+   用户登录成功将这个用户的其他Session都删除
+
+   配置就可以实现, 注意如果有多台WebServer需要配置Session同步
+
+   #+begin_example
+     @Override
+     protected void configure(HttpSecurity http) throws Exception {
+	 http.sessionManagement().maximumSessions(2)
+     }
+   #+end_example
+
+   https://www.baeldung.com/spring-security-session
+
+** 一次登录, 所有App共享用户信息(SSO)
+
+   https://developer.aliyun.com/article/636281
+
+   所有的认证和授权都在一个地方, 同域下的单点登录可以使用Session共享的方式实现
+
+   而不同的域下因为不可以设置其它域名的cookie, 因此无法共享Session, 只能由各个应用到同一个地方做集中认证.
+
+   而这个集中认证的服务器通常是CAS服务器.
+
+* OAuth2
+
+  https://spring.io/guides/tutorials/spring-boot-oauth2/
+
+  #+begin_example
+
+    +--------+                               +---------------+
+    |        |--(A)- Authorization Request ->|   Resource    |
+    |        |                               |     Owner     |
+    |        |<-(B)-- Authorization Grant ---|               |
+    |        |                               +---------------+
+    |        |
+    |        |                               +---------------+
+    |        |--(C)-- Authorization Grant -->| Authorization |
+    | Client |                               |     Server    |
+    |        |<-(D)----- Access Token -------|               |
+    |        |                               +---------------+
+    |        |
+    |        |                               +---------------+
+    |        |--(E)----- Access Token ------>|    Resource   |
+    |        |                               |     Server    |
+    |        |<-(F)--- Protected Resource ---|               |
+    +--------+                               +---------------+
+
+		    Figure 1: Abstract Protocol Flow
+  #+end_example
