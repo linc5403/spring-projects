@@ -25,9 +25,13 @@
 
      https://www.jianshu.com/p/5b9f1f4de88d
 
-  5. Video
+  6. Video
      
      https://youtu.be/8rnOsF3RVQc
+
+  7. 代码详解
+
+     https://www.jianshu.com/p/5f03d17212c6
 
 ** Spring Security 架构
 
@@ -140,6 +144,18 @@
      [[file:./img/exception-4.png]]
 
      [[file:./img/exception-5.png]]
+
+*** 代码分析
+
+    *~AbstractSecurityInterceptor~* - 核心流程
+
+    [[file:./img/security-interception.png]]
+
+    
+
+**** 认证    
+
+     
 
 * JWT
 ** 在线解析

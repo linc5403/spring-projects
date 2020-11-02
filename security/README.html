@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-10-17 Sat 09:50 -->
+<!-- 2020-10-17 Sat 18:07 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -246,44 +246,45 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org47c409e">1. Security</a>
+<li><a href="#org0da8936">1. Security</a>
 <ul>
-<li><a href="#org5094ad2">1.1. Spring Security 架构</a>
+<li><a href="#orgee87d69">1.1. Spring Security 架构</a>
 <ul>
-<li><a href="#orgc2342f1">1.1.1. Spring Security基本原理</a></li>
-<li><a href="#org88333e0">1.1.2. 三个重要的模块</a></li>
+<li><a href="#org8ad0f8d">1.1.1. Spring Security基本原理</a></li>
+<li><a href="#orgd48211c">1.1.2. 三个重要的模块</a></li>
+<li><a href="#org8aba0fd">1.1.3. 代码分析</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgb14f99a">2. JWT</a>
+<li><a href="#org743a6eb">2. JWT</a>
 <ul>
-<li><a href="#orgc9ddbc2">2.1. 在线解析</a></li>
-<li><a href="#org9868d0b">2.2. JWT的结构</a></li>
+<li><a href="#orgafbbb3a">2.1. 在线解析</a></li>
+<li><a href="#orgbf66c47">2.2. JWT的结构</a></li>
 </ul>
 </li>
-<li><a href="#org189846b">3. Security + JWT</a>
+<li><a href="#org81226fc">3. Security + JWT</a>
 <ul>
-<li><a href="#org5b98105">3.1. 业务流程</a></li>
-<li><a href="#org98e3a4d">3.2. 生成Token</a></li>
-<li><a href="#orgc26db15">3.3. 认证管理(Security的功能)</a></li>
-<li><a href="#org0477e11">3.4. 验证Token</a></li>
-<li><a href="#org0db14f5">3.5. Token刷新的流程</a></li>
-<li><a href="#org6f97f71">3.6. Token如何失效??</a></li>
+<li><a href="#org4527d6c">3.1. 业务流程</a></li>
+<li><a href="#org1ff86f5">3.2. 生成Token</a></li>
+<li><a href="#orge22e3db">3.3. 认证管理(Security的功能)</a></li>
+<li><a href="#orgbf51404">3.4. 验证Token</a></li>
+<li><a href="#orgac5a1b5">3.5. Token刷新的流程</a></li>
+<li><a href="#org2f9abf7">3.6. Token如何失效??</a></li>
 </ul>
 </li>
-<li><a href="#orgf85ad1f">4. 单点登录</a>
+<li><a href="#org33467e4">4. 单点登录</a>
 <ul>
-<li><a href="#org0e46ac9">4.1. 一个用户只能在一个客户端中登录(类似QQ)</a></li>
-<li><a href="#org721a2fa">4.2. 一次登录, 所有App共享用户信息(SSO)</a></li>
+<li><a href="#org0d6db0b">4.1. 一个用户只能在一个客户端中登录(类似QQ)</a></li>
+<li><a href="#orge000e18">4.2. 一次登录, 所有App共享用户信息(SSO)</a></li>
 </ul>
 </li>
-<li><a href="#org4e4f79c">5. OAuth2</a></li>
+<li><a href="#orgf6ac7d0">5. OAuth2</a></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org47c409e" class="outline-2">
-<h2 id="org47c409e"><span class="section-number-2">1</span> Security</h2>
+<div id="outline-container-org0da8936" class="outline-2">
+<h2 id="org0da8936"><span class="section-number-2">1</span> Security</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 参考资料:
@@ -345,15 +346,23 @@ Video
 <p>
 <a href="https://youtu.be/8rnOsF3RVQc">https://youtu.be/8rnOsF3RVQc</a>
 </p></li>
+
+<li><p>
+代码详解
+</p>
+
+<p>
+<a href="https://www.jianshu.com/p/5f03d17212c6">https://www.jianshu.com/p/5f03d17212c6</a>
+</p></li>
 </ol>
 </div>
 
-<div id="outline-container-org5094ad2" class="outline-3">
-<h3 id="org5094ad2"><span class="section-number-3">1.1</span> Spring Security 架构</h3>
+<div id="outline-container-orgee87d69" class="outline-3">
+<h3 id="orgee87d69"><span class="section-number-3">1.1</span> Spring Security 架构</h3>
 <div class="outline-text-3" id="text-1-1">
 </div>
-<div id="outline-container-orgc2342f1" class="outline-4">
-<h4 id="orgc2342f1"><span class="section-number-4">1.1.1</span> Spring Security基本原理</h4>
+<div id="outline-container-org8ad0f8d" class="outline-4">
+<h4 id="org8ad0f8d"><span class="section-number-4">1.1.1</span> Spring Security基本原理</h4>
 <div class="outline-text-4" id="text-1-1-1">
 <p>
 Spring Security所处位置:
@@ -467,8 +476,8 @@ UserDetailsService
 </div>
 </div>
 
-<div id="outline-container-org88333e0" class="outline-4">
-<h4 id="org88333e0"><span class="section-number-4">1.1.2</span> 三个重要的模块</h4>
+<div id="outline-container-orgd48211c" class="outline-4">
+<h4 id="orgd48211c"><span class="section-number-4">1.1.2</span> 三个重要的模块</h4>
 <div class="outline-text-4" id="text-1-1-2">
 
 <div class="figure">
@@ -478,7 +487,7 @@ UserDetailsService
 </div>
 
 <ol class="org-ol">
-<li><a id="orgaf16db6"></a>认证<br />
+<li><a id="orgb5f123e"></a>认证<br />
 <div class="outline-text-5" id="text-1-1-2-1">
 
 <div class="figure">
@@ -545,7 +554,7 @@ UserDetailsService
 
 
 
-<li><a id="orgef4fb01"></a>授权<br />
+<li><a id="orgad43fa5"></a>授权<br />
 <div class="outline-text-5" id="text-1-1-2-2">
 
 <div class="figure">
@@ -591,7 +600,7 @@ UserDetailsService
 </div>
 </li>
 
-<li><a id="org215aa91"></a>异常处理<br />
+<li><a id="org5068642"></a>异常处理<br />
 <div class="outline-text-5" id="text-1-1-2-3">
 
 <div class="figure">
@@ -626,15 +635,30 @@ UserDetailsService
 </li>
 </ol>
 </div>
+
+<div id="outline-container-org8aba0fd" class="outline-4">
+<h4 id="org8aba0fd"><span class="section-number-4">1.1.3</span> 代码分析</h4>
+<div class="outline-text-4" id="text-1-1-3">
+<p>
+<b><code>AbstractSecurityInterceptor</code></b>
+</p>
+</div>
+
+<ol class="org-ol">
+<li><a id="org11076c9"></a>认证<br /></li>
+</ol>
+</div>
 </div>
 </div>
 
-<div id="outline-container-orgb14f99a" class="outline-2">
-<h2 id="orgb14f99a"><span class="section-number-2">2</span> JWT</h2>
+
+
+<div id="outline-container-org743a6eb" class="outline-2">
+<h2 id="org743a6eb"><span class="section-number-2">2</span> JWT</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-orgc9ddbc2" class="outline-3">
-<h3 id="orgc9ddbc2"><span class="section-number-3">2.1</span> 在线解析</h3>
+<div id="outline-container-orgafbbb3a" class="outline-3">
+<h3 id="orgafbbb3a"><span class="section-number-3">2.1</span> 在线解析</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 <a href="https://jwt.io/">https://jwt.io/</a>
@@ -642,8 +666,8 @@ UserDetailsService
 </div>
 </div>
 
-<div id="outline-container-org9868d0b" class="outline-3">
-<h3 id="org9868d0b"><span class="section-number-3">2.2</span> JWT的结构</h3>
+<div id="outline-container-orgbf66c47" class="outline-3">
+<h3 id="orgbf66c47"><span class="section-number-3">2.2</span> JWT的结构</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 <b>HEADER和PAYLOAD都是可以解析出来的,所以不要放密码之类的东西</b>
@@ -664,12 +688,12 @@ UserDetailsService
 </div>
 </div>
 
-<div id="outline-container-org189846b" class="outline-2">
-<h2 id="org189846b"><span class="section-number-2">3</span> Security + JWT</h2>
+<div id="outline-container-org81226fc" class="outline-2">
+<h2 id="org81226fc"><span class="section-number-2">3</span> Security + JWT</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-org5b98105" class="outline-3">
-<h3 id="org5b98105"><span class="section-number-3">3.1</span> 业务流程</h3>
+<div id="outline-container-org4527d6c" class="outline-3">
+<h3 id="org4527d6c"><span class="section-number-3">3.1</span> 业务流程</h3>
 <div class="outline-text-3" id="text-3-1">
 
 <div class="figure">
@@ -679,8 +703,8 @@ UserDetailsService
 </div>
 </div>
 
-<div id="outline-container-org98e3a4d" class="outline-3">
-<h3 id="org98e3a4d"><span class="section-number-3">3.2</span> 生成Token</h3>
+<div id="outline-container-org1ff86f5" class="outline-3">
+<h3 id="org1ff86f5"><span class="section-number-3">3.2</span> 生成Token</h3>
 <div class="outline-text-3" id="text-3-2">
 
 <div class="figure">
@@ -690,8 +714,8 @@ UserDetailsService
 </div>
 </div>
 
-<div id="outline-container-orgc26db15" class="outline-3">
-<h3 id="orgc26db15"><span class="section-number-3">3.3</span> 认证管理(Security的功能)</h3>
+<div id="outline-container-orge22e3db" class="outline-3">
+<h3 id="orge22e3db"><span class="section-number-3">3.3</span> 认证管理(Security的功能)</h3>
 <div class="outline-text-3" id="text-3-3">
 
 <div class="figure">
@@ -700,8 +724,8 @@ UserDetailsService
 </div>
 </div>
 </div>
-<div id="outline-container-org0477e11" class="outline-3">
-<h3 id="org0477e11"><span class="section-number-3">3.4</span> 验证Token</h3>
+<div id="outline-container-orgbf51404" class="outline-3">
+<h3 id="orgbf51404"><span class="section-number-3">3.4</span> 验证Token</h3>
 <div class="outline-text-3" id="text-3-4">
 
 <div class="figure">
@@ -711,8 +735,8 @@ UserDetailsService
 </div>
 </div>
 
-<div id="outline-container-org0db14f5" class="outline-3">
-<h3 id="org0db14f5"><span class="section-number-3">3.5</span> Token刷新的流程</h3>
+<div id="outline-container-orgac5a1b5" class="outline-3">
+<h3 id="orgac5a1b5"><span class="section-number-3">3.5</span> Token刷新的流程</h3>
 <div class="outline-text-3" id="text-3-5">
 
 <div class="figure">
@@ -722,17 +746,17 @@ UserDetailsService
 </div>
 </div>
 
-<div id="outline-container-org6f97f71" class="outline-3">
-<h3 id="org6f97f71"><span class="section-number-3">3.6</span> Token如何失效??</h3>
+<div id="outline-container-org2f9abf7" class="outline-3">
+<h3 id="org2f9abf7"><span class="section-number-3">3.6</span> Token如何失效??</h3>
 </div>
 </div>
 
-<div id="outline-container-orgf85ad1f" class="outline-2">
-<h2 id="orgf85ad1f"><span class="section-number-2">4</span> 单点登录</h2>
+<div id="outline-container-org33467e4" class="outline-2">
+<h2 id="org33467e4"><span class="section-number-2">4</span> 单点登录</h2>
 <div class="outline-text-2" id="text-4">
 </div>
-<div id="outline-container-org0e46ac9" class="outline-3">
-<h3 id="org0e46ac9"><span class="section-number-3">4.1</span> 一个用户只能在一个客户端中登录(类似QQ)</h3>
+<div id="outline-container-org0d6db0b" class="outline-3">
+<h3 id="org0d6db0b"><span class="section-number-3">4.1</span> 一个用户只能在一个客户端中登录(类似QQ)</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
 用户登录成功将这个用户的其他Session都删除
@@ -755,8 +779,8 @@ protected void configure(HttpSecurity http) throws Exception {
 </div>
 </div>
 
-<div id="outline-container-org721a2fa" class="outline-3">
-<h3 id="org721a2fa"><span class="section-number-3">4.2</span> 一次登录, 所有App共享用户信息(SSO)</h3>
+<div id="outline-container-orge000e18" class="outline-3">
+<h3 id="orge000e18"><span class="section-number-3">4.2</span> 一次登录, 所有App共享用户信息(SSO)</h3>
 <div class="outline-text-3" id="text-4-2">
 <p>
 <a href="https://developer.aliyun.com/article/636281">https://developer.aliyun.com/article/636281</a>
@@ -777,8 +801,8 @@ protected void configure(HttpSecurity http) throws Exception {
 </div>
 </div>
 
-<div id="outline-container-org4e4f79c" class="outline-2">
-<h2 id="org4e4f79c"><span class="section-number-2">5</span> OAuth2</h2>
+<div id="outline-container-orgf6ac7d0" class="outline-2">
+<h2 id="orgf6ac7d0"><span class="section-number-2">5</span> OAuth2</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 <a href="https://spring.io/guides/tutorials/spring-boot-oauth2/">https://spring.io/guides/tutorials/spring-boot-oauth2/</a>
@@ -811,7 +835,7 @@ protected void configure(HttpSecurity http) throws Exception {
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: lin chuan</p>
-<p class="date">Created: 2020-10-17 Sat 09:50</p>
+<p class="date">Created: 2020-10-17 Sat 18:07</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
