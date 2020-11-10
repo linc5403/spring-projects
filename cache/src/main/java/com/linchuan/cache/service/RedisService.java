@@ -2,7 +2,6 @@ package com.linchuan.cache.service;
 
 import com.google.gson.Gson;
 import com.linchuan.cache.bean.Blog;
-import com.sun.tools.jconsole.JConsoleContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.core.RedisTemplate;

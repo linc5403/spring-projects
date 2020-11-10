@@ -15,7 +15,7 @@ import java.util.List;
 
 @SpringBootApplication
 @MapperScan("com.linchuan.cache")
-//@EnableCaching
+@EnableCaching
 public class CacheApplication {
 	public static void main(String[] args) {
 		ApplicationContext context = SpringApplication.run(CacheApplication.class, args);
