@@ -18,6 +18,9 @@ public class BlogService {
         this.blogDao = blogDao;
     }
 
+    @Autowired
+    private RedisService redisService;
+
     public List<Blog> findBlogs(Boolean findAll, Integer id) {
         List<Blog> rlt;
         if (findAll) {
@@ -25,7 +28,18 @@ public class BlogService {
         } else {
             // 其他查找, 还没写
             rlt = new ArrayList<>();
-            rlt.add(blogDao.findBlogById(id));
+            // 查找blog
+            // DB之前先访问Cache, 如果Cache有了, 直接用
+            Blog blog;
+            blog = redisService.getBlogFromCache(id);
+            if (blog == null) {
+                // db
+                System.out.println("using db.....");
+                blog = blogDao.findBlogById(id);
+                // save to cache
+                redisService.setBlogToCache(blog);
+            }
+            rlt.add(blog);
         }
         return rlt;
     }
@@ -40,6 +54,7 @@ public class BlogService {
     }
 
     public Integer updateBlog(Blog blog) {
+        redisService.removeBlogInCache(blog.getId());
         try {
             blogDao.updateBlog(blog);
             return 0;

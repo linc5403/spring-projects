@@ -8,7 +8,7 @@ import java.util.Date;
 @Data
 // 如果只是想将对象放进Redis, 必须将对象序列化, 否则会导致无法放入redis
 //public class Blog implements Serializable {
-public class Blog {
+public class Blog implements Serializable{
     Integer id;
     String title;
     String Content;

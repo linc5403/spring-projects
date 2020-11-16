@@ -1,0 +1,242 @@
+* Security
+  参考资料:
+
+  1. Spring Security官方文档
+
+     https://docs.spring.io/spring-security/site/docs/current/reference/html5/
+
+  2. 动态URL权限
+
+     https://segmentfault.com/a/1190000010672041
+
+  3. AccessDecisionManager组件介绍
+
+     https://juejin.im/post/6844903828769210375
+
+  4. 自定义异常处理
+
+     https://blog.csdn.net/jkjkjkll/article/details/79975975
+
+  5. Security + JWT
+     
+     https://www.javainuse.com/spring/boot-jwt
+
+     https://blog.csdn.net/qq_38579100/article/details/108655008
+
+     https://www.jianshu.com/p/5b9f1f4de88d
+
+  6. Video
+     
+     https://youtu.be/8rnOsF3RVQc
+
+  7. 代码详解
+
+     https://www.jianshu.com/p/5f03d17212c6
+
+** Spring Security 架构
+
+*** Spring Security基本原理   
+
+    Spring Security所处位置:
+
+    [[file:./img/overview.png]]
+
+
+       [[file:./img/A310331_2_En_4_Fig10_HTML.jpg]]
+
+    - 核心组件
+      
+      - SecurityContextHolder
+
+	提供对 SecurityContext 的访问，底层封装了 ThreadLocal，使其管理的对象（SecurityContext ）存储在当前线程上；
+
+      - SecurityContext
+
+	持有 Authentication 对象和其他可能需要的信息；
+	
+      - AuthenticationManager 
+	
+        其中可以包含多个AuthenticationProvider；
+
+      - ProviderManager 
+	
+        对象为 AuthenticationManager 接口的实现类；
+
+      - AuthenticationProvider
+
+	主要用来进行认证操作的类 调用其中的 authenticate() 方法去进行认证操作；
+
+      - Authentication
+
+	Spring Security 方式的认证主体；
+
+      - GrantedAuthority
+
+	对认证主题的应用层面的授权，含当前用户的权限信息，通常使用角色表示;
+
+      - UserDetails
+
+	构建Authentication对象必须的信息，可以自定义，可能需要访问DB得到；
+
+      - UserDetailsService
+
+	通过username构建UserDetails对象，通过loadUserByUsername根据userName获取UserDetail对象 （可以在这里基于自身业务进行自定义的实现 如通过数据库，xml,缓存获取等）。
+
+
+
+   
+    [[file:./img/A310331_2_En_2_Fig3_HTML.jpg]]
+  
+    [[file:./img/A310331_2_En_4_Fig2_HTML.jpg]]
+
+*** 三个重要的模块
+
+   [[file:./img/Selection_010.png]]
+
+**** 认证
+     [[file:./img/authen-1.png]]
+
+     [[file:./img/authen-2.png]]
+
+     [[file:./img/authen-3.png]]
+
+     [[file:./img/authen-41.png]]
+
+     [[file:./img/authen-5.png]]
+
+     [[file:./img/authen-6.png]]
+
+     [[file:./img/authen-7.png]]
+
+     [[file:./img/authen-8.png]]
+
+     [[file:./img/authen-9.png]]
+
+     [[file:./img/authen-10.png]]
+
+     
+
+
+**** 授权
+
+     [[file:./img/author-1.png]]
+
+     [[file:./img/author-2.png]]
+
+     [[file:./img/author-3.png]]
+
+     [[file:./img/author-4.png]]
+
+     [[file:./img/author-5.png]]
+
+     [[file:./img/author-6.png]]
+
+     [[file:./img/author-7.png]]
+
+**** 异常处理
+
+     [[file:./img/exception-1.png]]
+
+     [[file:./img/exception-2.png]]
+
+     [[file:./img/exception-3.png]]
+
+     [[file:./img/exception-4.png]]
+
+     [[file:./img/exception-5.png]]
+
+*** 代码分析
+
+    *~AbstractSecurityInterceptor~* - 核心流程
+
+    [[file:./img/security-interception.png]]
+
+    
+
+**** 认证    
+
+     
+
+* JWT
+** 在线解析
+   https://jwt.io/
+
+** JWT的结构
+
+   *HEADER和PAYLOAD都是可以解析出来的,所以不要放密码之类的东西*
+
+   [[file:./img/63_5-min.jpeg]]
+
+   [[file:./img/63_6-min.jpeg]]
+
+* Security + JWT
+** 业务流程
+       [[file:./img/62-12-min.jpeg]]
+
+** 生成Token
+     [[file:./img/62-2-min.jpeg]]
+
+** 认证管理(Security的功能)
+   [[file:./img/62-11-min.jpeg]]
+** 验证Token
+    [[file:./img/62-3-min.jpeg]]
+
+** Token刷新的流程
+
+   [[file:./img/series-7-1-min.jpeg]]
+
+** Token如何失效??
+
+* 单点登录
+
+** 一个用户只能在一个客户端中登录(类似QQ)
+
+   用户登录成功将这个用户的其他Session都删除
+
+   配置就可以实现, 注意如果有多台WebServer需要配置Session同步
+
+   #+begin_example
+     @Override
+     protected void configure(HttpSecurity http) throws Exception {
+	 http.sessionManagement().maximumSessions(2)
+     }
+   #+end_example
+
+   https://www.baeldung.com/spring-security-session
+
+** 一次登录, 所有App共享用户信息(SSO)
+
+   https://developer.aliyun.com/article/636281
+
+   所有的认证和授权都在一个地方, 同域下的单点登录可以使用Session共享的方式实现
+
+   而不同的域下因为不可以设置其它域名的cookie, 因此无法共享Session, 只能由各个应用到同一个地方做集中认证.
+
+   而这个集中认证的服务器通常是CAS服务器.
+
+* OAuth2
+
+  https://spring.io/guides/tutorials/spring-boot-oauth2/
+
+  #+begin_example
+
+    +--------+                               +---------------+
+    |        |--(A)- Authorization Request ->|   Resource    |
+    |        |                               |     Owner     |
+    |        |<-(B)-- Authorization Grant ---|               |
+    |        |                               +---------------+
+    |        |
+    |        |                               +---------------+
+    |        |--(C)-- Authorization Grant -->| Authorization |
+    | Client |                               |     Server    |
+    |        |<-(D)----- Access Token -------|               |
+    |        |                               +---------------+
+    |        |
+    |        |                               +---------------+
+    |        |--(E)----- Access Token ------>|    Resource   |
+    |        |                               |     Server    |
+    |        |<-(F)--- Protected Resource ---|               |
+    +--------+                               +---------------+
+
+		    Figure 1: Abstract Protocol Flow
+  #+end_example
