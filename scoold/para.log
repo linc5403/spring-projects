@@ -1,0 +1,7 @@
+2020-11-16 17:04:58,932 [INFO ] com.erudika.scoold.ScooldServer - Starting ScooldServer v1.40.4 on banyuandeMacBook-Air-2.local with PID 47978 (/Users/banyuan/spring-projects/scoold/scoold-1.40.4.jar started by banyuan in /Users/banyuan/spring-projects/scoold)
+2020-11-16 17:04:58,951 [INFO ] com.erudika.scoold.ScooldServer - The following profiles are active: embedded
+2020-11-16 17:05:04,025 [INFO ] com.erudika.scoold.ScooldServer - Listening on port 8000...
+2020-11-16 17:05:04,829 [INFO ] com.erudika.scoold.ScooldServer - Initialized ParaClient with endpoint http://localhost:8080 and access key 'app:scoold'.
+2020-11-16 17:05:07,964 [INFO ] c.e.s.velocity.SpringResourceLoader - SpringResourceLoader for Velocity: using resource loader [org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@224edc67, started on Mon Nov 16 17:04:59 CST 2020] and resource loader paths [classpath:templates/]
+2020-11-16 17:05:10,686 [INFO ] com.erudika.scoold.ScooldServer - Started ScooldServer in 13.226 seconds (JVM running for 16.32)
+2020-11-16 17:07:01,749 [INFO ] c.erudika.scoold.utils.ScooldUtils - Created new user '张三' with id=1239135957555351552:profile, groups=users, spaces=[scooldspace:default].

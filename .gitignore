@@ -1,3 +1,7 @@
+*.log
+*.jar
+*.zip
+data/
 HELP.md
 target/
 .mvn/
