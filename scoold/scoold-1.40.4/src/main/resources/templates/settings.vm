@@ -1,0 +1,202 @@
+<div class="page-wrapper">
+	#if ($request.getParameter("delete"))
+		<br>
+		<br>
+		<div class="mvl">
+			<div class="center">
+				<h1 class="black-text">$!lang.get("settings.delete.confirm")</h1>
+				<br>
+				<form method="post" action="$settingslink/goodbye">
+					#sectoken(false)
+					<div class="input-field">
+						<button type="submit" class="btn-large waves-effect waves-light mrl red white-text">$!lang.get('delete')</button>
+						&nbsp; &nbsp; &nbsp;
+						<a href="$settingslink" title="Cancel" class="btn-large grey waves-effect waves-light">$!lang.get("cancel")</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	#else
+		<h2>$!lang.get("settings.title")</h2>
+		<hr>
+		<form method="post">
+			#if($scooldUtils.isNearMeFeatureEnabled())
+				<h4>$!lang.get('posts.locationfilter')</h4>
+				<div class="mbm">
+					<p>$!lang.get('settings.location')</p>
+					<input type="hidden" name="latlng" class="latlngbox" value="$!{authUser.latlng}">
+					<div id="map-canvas" class="gmap center">#ajaxloading(false)</div>
+				</div>
+			#end
+
+			<div class="mbm">
+				<h4 class="ptl">$!lang.get('posts.tagfilter')</h4>
+				<p>$!lang.get("settings.tagfilter.text")</p>
+				#sectoken(false)
+				<div class="input-field">
+					<i class="fa fa-tag fa-2x grey-text prefix ptm"></i>
+					<div class="chips chips-autocomplete" title="$!lang.get('tags.title')"></div>
+					<input type="hidden" name="tags" value="$!authUser.favtagsString">
+				</div>
+			</div>
+
+			#if($authUser.user.identityProvider == "generic")
+				<h4>$!lang.get('password')
+					#if($request.getParameter("passChanged"))
+						<small class="green-text"><i class="fa fa-check"></i></small>
+					#end
+				</h4>
+				<div class="row">
+					<div class="col m3">
+						<input type="password" name="oldpassword" value="" minlength="6" placeholder="$!lang.get('password')">
+					</div>
+					<div class="col m3">
+						<input type="password" name="newpassword" value="" minlength="6" placeholder="$!lang.get('newpassword')">
+					</div>
+				</div>
+			#end
+
+			<h4 class="ptl">$!lang.get('settings.anonymity')</h4>
+			<div class="mbm">
+				<div class="switch">
+					<label>
+						$!lang.get('off')
+						#if($authUser.anonymityEnabled)
+						<input type="checkbox" name="anon" checked="checked" value="true">
+						#else
+						<input type="checkbox" name="anon" value="true">
+						#end
+						<span class="lever"></span>
+						$!lang.get('on')
+					</label>
+					<span class="mll mediumText">$!lang.get('settings.anonymity.text')</span>
+				</div>
+			</div>
+
+			<h4 class="ptl">$!lang.get('settings.notifications')</h4>
+			<p class="mvl grey-text text-darken-1"><i class="fa fa-envelope"></i> <tt>$!authUser.user.email</tt></p>
+			<div class="mbm">
+				<div class="switch">
+					<label>
+						$!lang.get('off')
+						#if($newpostEmailsEnabled)
+						<input id="newpostEmailsSwitch" type="checkbox" name="newpostEmailsOn" checked="checked" value="true">
+						#else
+						<input id="newpostEmailsSwitch" type="checkbox" name="newpostEmailsOn" value="true">
+						#end
+						<span class="lever"></span>
+						$!lang.get('on')
+					</label>
+					<span class="mll mediumText">$!lang.get('settings.newpostemails')</span>
+					#if(($authUser.favspaces && !$authUser.favspaces.isEmpty()) || $newpostEmailsEnabled)
+						#set($hideFilterToggleClass = "" )
+					#else
+						#set($hideFilterToggleClass = "hide" )
+					#end
+					<a	href="#" id="newpostEmailsFilterToggle" class="${hideFilterToggleClass} mlm">
+						<i class="fa fa-filter"></i> $!lang.get('filter')
+					</a>
+				</div>
+				#if($authUser.favspaces && !$authUser.favspaces.isEmpty())
+					#set($hideFavspacesClass = "" )
+				#else
+					#set($hideFavspacesClass = "hide" )
+				#end
+				<div id="newpostEmailsFilter" class="${hideFavspacesClass}">
+					<div class="row">
+						<div class="col s12 m8">
+							<p class="mediumText pvl mtm">$!lang.get('settings.filterbyspace')</p>
+						</div>
+						<div class="col s12 m4">
+							<div class="input-field">
+								<select multiple name="favspaces">
+									#foreach($space in $authUser.allSpaces)
+										#set($spaceId = $!scooldUtils.getSpaceId($!space))
+										#if($newpostEmailsEnabled && $authUser.favspaces.contains($spaceId))
+											<option value="$spaceId" selected="selected">$!scooldUtils.getSpaceName($space)</option>
+										#else
+											<option value="$spaceId">$!scooldUtils.getSpaceName($space)</option>
+										#end
+									#end
+								</select>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<div class="mbm">
+				<div class="switch">
+					<label>
+						$!lang.get('off')
+						#if($authUser.favtagsEmailsEnabled)
+						<input type="checkbox" name="favtagsEmailsOn" checked="checked" value="true">
+						#else
+						<input type="checkbox" name="favtagsEmailsOn" value="true">
+						#end
+						<span class="lever"></span>
+						$!lang.get('on')
+					</label>
+					<span class="mll mediumText">$!lang.get('settings.favtagsemails')</span>
+				</div>
+			</div>
+			<div class="mbm">
+				<div class="switch">
+					<label>
+						$!lang.get('off')
+						#if($authUser.replyEmailsEnabled)
+						<input type="checkbox" name="replyEmailsOn" checked="checked" value="true">
+						#else
+						<input type="checkbox" name="replyEmailsOn" value="true">
+						#end
+						<span class="lever"></span>
+						$!lang.get('on')
+					</label>
+					<span class="mll mediumText">$!lang.get('settings.replyemails')</span>
+				</div>
+			</div>
+			<div class="mbl">
+				<div class="switch">
+					<label>
+						$!lang.get('off')
+						#if($authUser.commentEmailsEnabled)
+						<input type="checkbox" name="commentEmailsOn" checked="checked" value="true">
+						#else
+						<input type="checkbox" name="commentEmailsOn" value="true">
+						#end
+						<span class="lever"></span>
+						$!lang.get('on')
+					</label>
+					<span class="mll mediumText">$!lang.get('settings.commentemails')</span>
+				</div>
+			</div>
+
+			<h4 class="ptl">$!lang.get('settings.darkmode')</h4>
+			<div class="mbm">
+				<div class="switch">
+					<label>
+						$!lang.get('off')
+						#if($darkModeEnabled)
+						<input type="checkbox" name="dark" checked="checked" value="true">
+						#else
+						<input type="checkbox" name="dark" value="true">
+						#end
+						<span class="lever"></span>
+						$!lang.get('on')
+					</label>
+					<span class="mll mediumText">$!lang.get('settings.darkmode.text')</span>
+				</div>
+			</div>
+
+			<button class="btn waves-effect waves-light mtl" type="submit">$!lang.get('save')</button>
+		</form>
+		<br>
+		<br>
+		<br>
+		<div class="mvl">
+			<a href="${settingslink}?delete=true" title="Delete my account" class="red-text">
+				<strong>$!lang.get("settings.delete")</strong>
+			</a>
+		</div>
+	#end
+</div>

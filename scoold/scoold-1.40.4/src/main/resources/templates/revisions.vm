@@ -1,0 +1,89 @@
+#macro(tagbox $tags)
+	#foreach($showtag in $tags)
+	<span class="mrm">
+		<strong>#$!showtag.trim()</strong>
+	</span>
+	#end
+#end
+
+#macro(revisionbox $showrev $showorigrev $showpost)
+	#set($actionlink = "#getpostlink($showpost false true)")
+	#set($actionlink2 = "#getpostlink($showpost true true)")
+	#set($canrestore = $scooldUtils.canEdit($showpost, $authUser))
+	<div class="card-panel">
+		<div class="row">
+			<div class="col m3 s6">
+				<div class="mbl">
+					#if ($showpost.revisionid == $showrev.id)
+					<i class="fa fa-check-circle green-text fa-3x tooltipped" data-tooltip="$!lang.get('revisions.current')"></i>
+					#elseif ($canrestore)
+					<form method="post" action="$!actionlink/$showrev.parentid/restore/$!showrev.id">
+						#sectoken(false)
+						<button type="submit" class="btn waves-effect waves-light" title="Restore">
+							<i class="fa fa-undo"></i> $!lang.get("restore")
+						</button>
+					</form>
+					#end
+				</div>
+			</div>
+			<div class="col m6 s6 center-align">
+				<span class="grey-text"><i class="fa fa-clock-o"></i> #formatdate($showrev.timestamp "")</span>
+				<div class="grey-text largeText">#if ($showrev.original) $!lang.get("original") #end </div>
+			</div>
+			<div class="col m3 s12">
+				#smallpersonbox($showrev.author)
+			</div>
+		</div>
+		<div>
+			#if ($showrev.title)
+				<div class="newrev largeText">$showrev.title</div>
+				#if ($showorigrev.title)
+				<span class="hide oldrev">$!showorigrev.title</span>
+				#end
+				<hr>
+			#end
+			#if ($showrev.body)
+				<div class="newrev mtl">$!showrev.body</div>
+				#if ($showorigrev.body)
+					<span class="hide oldrev">$!showorigrev.body</span>
+				#end
+			#end
+			#if ($showrev.tags)
+				<div class="newrev tagsdiff mtm">
+					#tagbox($showrev.tags)
+				</div>
+				#if ($showorigrev.tags)
+					<span class="hide oldrev">#tagbox($!showorigrev.tags)</span>
+				#end
+			#end
+		</div>
+	</div>
+#end
+
+#macro(revisionspage $revisions $showpost)
+	#if ($revisions && !$revisions.isEmpty())
+		#set($lastIndex = $revisions.size() - 1)
+		#set($lastrev = $revisions.get($lastIndex))
+
+		#if ($revisions.size() == 1)
+			#revisionbox($lastrev $lastrev $showpost)
+		#else
+			#foreach($revision in $revisions)
+				#if ($foreach.count < $revisions.size())
+					#set($prevrev = $revisions.get($foreach.count))
+				#else
+					#set($prevrev = $lastOnPage)
+				#end
+				#revisionbox($revision $prevrev $showpost)
+			#end
+		#end
+	#end
+#end
+
+<i class="fa fa-arrow-left grey-text"></i>
+<a href="#getpostlink($showPost false false)" title="Go back">$!lang.get("backtopost")</a>
+<div class="">
+	<h2>$!lang.get("revisions.title") #showcount($itemcount.count)</h2>
+	<hr>
+	#paginate("revisions" $itemcount "" "page")
+</div>

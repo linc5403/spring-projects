@@ -1,0 +1,138 @@
+<div class="page-wrapper">
+	<div class="row questionpage">
+		<div class="col m12 l9">
+			<span class="grey-text">
+			#if($showPost.location && !$showPost.location.isEmpty() && $scooldUtils.isNearMeFeatureEnabled())
+				<i class="fa fa-map-marker grey-text tooltipped mrs" data-tooltip="$showPost.location"></i>
+			#end
+
+			#if($showPost.space && !$scooldUtils.isDefaultSpace($showPost.space))
+				<strong class="grey-text">$scooldUtils.getSpaceName($!showPost.space) / </strong>
+			#end
+			#if ($showPost.answercount > 0)
+				#if ($showPost.answerid && !$showPost.answerid.isEmpty())
+					<i class="fa fa-check-circle tooltipped" data-tooltip="Approved answer"></i>
+				#end
+				$!lang.get("posts.answered")
+			#else
+				$!lang.get("posts.unanswered")
+			#end
+			</span>
+			<div id="post-title" class="largeText">$!{showPost.title}</div>
+			<hr>
+			#ajaxloading(true)
+			<div class="mbl pbl">
+				#postbox($showPost $showPost)
+			</div>
+
+			#if (!$showPost.isReply())
+				#if ($answerslist && !$answerslist.isEmpty()) #set($hideAnswersHead = "") #else #set($hideAnswersHead = "hide")#end
+				<div class="answers-head $!{hideAnswersHead}">
+					#set($sortarr = {'votes': "", 'newest': ""} )
+					#setsortbyselection($sortarr 'votes')
+					<span class="right">
+						<a href="$questionlink/$showPost.id/#stripstr($showPost.title)#sortorderparam('?')" title="Most voted answers"
+							 class="chip $sortarr.votes">#sortordericon() $!lang.get("votes")</a>
+						<a href="$questionlink/$showPost.id/#stripstr($showPost.title)?sortby=newest#sortorderparam('&' 'newest')" title="Newest answers"
+							 class="chip $sortarr.newest">#sortordericon("newest") $!lang.get("newest")</a>
+					</span>
+					<h4 class="grey-text">$!lang.get("answers.title") #showcount($itemcount.count)</h4>
+				</div>
+
+				#paginate("replies" $itemcount "" "page")
+
+				#if(!$showPost.isClosed())
+					#if ($authenticated)
+						<div class="pvl mbm">
+							<form method="post" id="answer-question-form">
+								#sectoken(false "CREATE_REPLY")
+								<a id="write-post"></a>
+								<h4 class="grey-text">
+									#if ($showPost.isQuestion()) $!lang.get("posts.youranswer")#else$!lang.get("feedback.writereply")#end
+								</h4>
+
+								<textarea class="edit-post" name="body" maxlength="$MAX_TEXT_LENGTH" minlength="10"></textarea>
+								#getmessagebox("red white-text" $error.get("body"))
+
+								<input type="hidden" name="answer" value="true">
+								<div>
+									<label for="follow-thread-check">
+										#if($showPost.followers && $showPost.followers.containsKey($authUser.user.id))
+											<input type="checkbox" class="filled-in" id="follow-thread-check" checked="checked">
+										#elseif(($authUser.replyEmailsEnabled && $scooldUtils.isMine($showPost, $authUser)))
+											<input type="checkbox" class="filled-in" id="follow-thread-check" checked="checked" disabled>
+										#else
+											<input type="checkbox" class="filled-in" id="follow-thread-check">
+										#end
+										<span><strong class="mediumText">$!lang.get('posts.emailme')</strong></span>
+									</label>
+								</div>
+
+								<button class="btn mtl waves-effect waves-light" type="submit">
+									<i class="fa fa-paper-plane left"></i>$!lang.get('post')
+								</button>
+							</form>
+						</div>
+					#else
+						<div class="mvl pvl center">
+								<a href="$signinlink?returnto=$!returnto" rel="nofollow" class="btn-large"
+									 title="Answer this question"><i class="fa fa-pencil"></i> $!lang.get("posts.writeanswer")</a>
+						</div>
+					#end
+				#end
+
+				#if ($showPost.isClosed())
+					<div class="center mvm">
+						<h3 class="grey-text">
+								<i class="fa fa-lock"></i> $!lang.get("posts.closed")
+							</h3>
+					</div>
+				#end
+			#end
+		</div>
+
+		<div class="col m12 l3 s12">
+			<div class="card-panel">
+				<div class="mediumText pvs"><b>$!utils.abbreviateInt($!showPost.viewcount, 0)</b> $!lang.get('posts.views')</div>
+				<div class="mediumText pvs"><b>$!showPost.answercount</b>
+					#if($showPost.answercount == 1)$!lang.get('posts.answer')#else$!lang.get('answers.title')#end</div>
+				#if($showPost.type == "unapprovedquestion")
+					<div class="mediumText pvs orange-text"><i class="fa fa-exclamation-circle"></i>&nbsp; $!lang.get('posts.unapproved')</div>
+				#end
+				<div class="mediumText pvs tooltipped" data-tooltip="$!lang.get('posts.posted')">
+					<i class="fa fa-clock-o grey-text"></i> #formatdate($showPost.timestamp "")
+				</div>
+				#if($showPost.lastactivity)
+					<div class="mediumText pvs tooltipped" data-tooltip="$!lang.get('profile.about.lastseen')">
+						<i class="fa fa-pencil-square grey-text"></i> #formatdate($showPost.lastactivity "")
+					</div>
+				#end
+				#if($showPost.location && !$showPost.location.isEmpty() && $scooldUtils.isNearMeFeatureEnabled())
+					<div class="mediumText pvs"><i class="fa fa-map-marker grey-text"></i>&nbsp; $!showPost.location</div>
+				#end
+				#if($showPost.space && !$scooldUtils.isDefaultSpace($showPost.space))
+					<div class="mediumText pvs"><i class="fa fa-th-large grey-text"></i>&nbsp;
+						$scooldUtils.getSpaceName($!showPost.space)
+					</div>
+				#end
+				#if ($showPost.tags && !$showPost.tags.isEmpty())
+					<div class="mediumText pvs"><i class="fa fa-tags grey-text"></i> $!lang.get('tags.title')</div>
+					<div class="mtm tags-aside">#tagsbox($showPost.tags $questionslink)</div>
+				#end
+			</div>
+
+			#if ($similarquestions && !$similarquestions.isEmpty())
+				<div class="card-panel similar mbl mediumText">
+					<div class="mbl">$!lang.get("posts.similar")</div>
+					#foreach($showSimilar in $similarquestions)
+						<div>
+							<small><i class="fa fa-caret-right grey-text"></i></small>
+							<a href="#getpostlink($showSimilar false false)" class="smallText">$!showSimilar.title</a>
+						</div>
+					#end
+				</div>
+			#end
+
+		</div>
+	</div>
+</div>
