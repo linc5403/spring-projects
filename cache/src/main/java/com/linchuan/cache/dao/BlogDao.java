@@ -7,8 +7,11 @@ import java.util.List;
 
 @Repository
 public interface BlogDao {
-    List<Blog> findAllBlogs();
-    Blog findBlogById(Integer id);
-    void addBlog(Blog blog);
-    void updateBlog(Blog blog);
+  List<Blog> findAllBlogs();
+
+  Blog findBlogById(Integer id);
+
+  void addBlog(Blog blog);
+
+  void updateBlog(Blog blog);
 }
