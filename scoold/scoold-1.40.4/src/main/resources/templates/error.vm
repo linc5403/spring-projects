@@ -1,0 +1,26 @@
+<div class="page-wrapper">
+	<div class="container center pal">
+		<div class="mbl">
+			<a href="/"><img src="$!imageslink/logosq.png" width="220" height="220" alt="Error"></a>
+		</div>
+		#if ($code == "403")
+		<h1>$!lang.get("forbidden")</h1>
+		#elseif ($code == "400")
+		<h1>$!lang.get("badrequest")</h1>
+		#elseif ($code == "401")
+		<h1>$!lang.get("msgcode.3")</h1>
+		#elseif ($code == "500")
+		<h1>$!lang.get("servererror")</h1>
+		#elseif ($code == "503")
+		<h1>$!lang.get("sitedown")</h1>
+		#else
+		<h2>$!lang.get("error.title")</h2>
+		#end
+		$!status $!reason
+
+		#if($code == "500" && $reason.contains("ConnectException"))
+			<h5 class="red-text">No connection to Para backend.</h5>
+		#end
+		<br>
+	</div>
+</div>

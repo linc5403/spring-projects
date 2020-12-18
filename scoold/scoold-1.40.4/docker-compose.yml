@@ -1,0 +1,39 @@
+version: '3.4'
+
+build:
+  context: .
+  network: host
+
+services:
+   para:
+     image: erudikaltd/para
+     ports:
+       - "8080:8080"
+     volumes:
+       - type: volume
+         source: paraData
+         target: /para/data
+       - type: volume
+         source: paraLib
+         target: /para/lib
+       - type: bind
+         source: ./para-application.conf
+         target: /para/application.conf
+     restart: always
+     env_file: para.env
+
+   scoold:
+     depends_on:
+       - para
+     image: erudikaltd/scoold
+     ports:
+       - "8000:8000"
+     volumes:
+       - type: bind
+         source: ./scoold-application.conf
+         target: /scoold/application.conf
+     restart: always
+     env_file: scoold.env
+volumes:
+  paraData:
+  paraLib:

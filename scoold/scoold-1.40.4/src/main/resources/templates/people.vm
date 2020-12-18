@@ -1,0 +1,90 @@
+#if($currentSpace && !$currentSpace.isEmpty() && !$request.getParameter("bulkedit"))
+	<p class="mediumText grey-text">$scooldUtils.getSpaceName($!currentSpace)</p>
+#end
+<div class="page-wrapper">
+	<h4 class="hide-on-large-only">$!lang.get("people.title") #showcount($itemcount.count)</h4>
+
+	<div class="chips-container">
+		#set($sortarr = {'votes': "", 'newest': "", 'properties.yearlyVotes': "", 'properties.quarterlyVotes': "", 'properties.montlyVotes': "", 'properties.weeklyVotes': ""} )
+		#setsortbyselection($sortarr 'newest')
+		<a href="$peoplelink#sortorderparam('?')" class="chip $sortarr.newest">#sortordericon() $!lang.get("newest")</a>
+		<a href="$peoplelink?sortby=votes#sortorderparam('&' 'votes')" class="chip $sortarr.votes">#sortordericon("votes") $!lang.get("reputation")</a>
+		<a href="$peoplelink?sortby=properties.yearlyVotes#sortorderparam('&' 'properties.yearlyVotes')" class="chip $sortarr['properties.yearlyVotes']">#sortordericon("properties.yearlyVotes") $!lang.get('year')</a>
+		<a href="$peoplelink?sortby=properties.quarterlyVotes#sortorderparam('&' 'properties.quarterlyVotes')" class="chip $sortarr['properties.quarterlyVotes']">#sortordericon("properties.quarterlyVotes") $!lang.get('quarter')</a>
+		<a href="$peoplelink?sortby=properties.montlyVotes#sortorderparam('&' 'properties.monthlyVotes')" class="chip $sortarr['properties.montlyVotes']">#sortordericon("properties.monthlyVotes") $!lang.get('month')</a>
+		<a href="$peoplelink?sortby=properties.weeklyVotes#sortorderparam('&' 'properties.weeklyVotes')" class="chip $sortarr['properties.weeklyVotes']">#sortordericon("properties.weeklyVotes") $!lang.get('week')</a>
+		#if($isAdmin)
+			#if($request.getParameter("bulkedit"))
+				<a href="$peoplelink" class="chip grey darken-2 white-text">$!lang.get('bulkeditspaces')</a>
+			#else
+				<a href="$peoplelink?bulkedit=true" class="chip orange-text text-darken-2"><b>$!lang.get('bulkeditspaces')</b></a>
+			#end
+		#end
+	</div>
+
+	<h2 class="hide-on-med-and-down">$!lang.get("people.title") #showcount($itemcount.count)</h2>
+
+	#if($isAdmin && $request.getParameter("bulkedit"))
+	<form method="get">
+		<div class="input-field">
+			<i class="fa fa-search fa-2x prefix grey-text"></i>
+			<input type="search" name="q" value="$!request.getParameter('q')" placeholder="$!lang.get('search.title')">
+			<input type="hidden" name="bulkedit" value="true">
+		</div>
+	</form>
+
+	<form method="post" action="$peoplelink/bulk-edit?$!{request.queryString}">
+		<div class="row">
+			<div class="col s12 m6">
+				<div class="input-field">
+					<select multiple name="selectedSpaces">
+						<option selected="selected" value="$scooldUtils.getDefaultSpace()">$!lang.get('defaultspace')</option>
+						#foreach($space in $authUser.allSpaces)
+						<option value="$space">$!scooldUtils.getSpaceName($space)</option>
+						#end
+					</select>
+					<label>$!lang.get('spaces.title')</label>
+				</div>
+			</div>
+			<div class="col s12 m2">
+				<div class="input-field">
+					<select name="operation" id="bulk-operation">
+						<option value="set" selected="selected">Assign to</option>
+						<option value="add">$!lang.get('add')</option>
+						<option value="remove">$!lang.get('remove')</option>
+					</select>
+					<label for="bulk-operation">Operation</label>
+				</div>
+			</div>
+			<div class="col s12 m2">
+				<div class="input-field">
+					<select name="selection" id="bulk-selection">
+						<option value="selected" selected="selected">Selected users</option>
+						<option value="all">All users</option>
+					</select>
+					<label for="bulk-selection">Selection</label>
+				</div>
+			</div>
+			<div class="col s12 m2">
+				<button class="btn waves-effect waves-light mvl right" type="submit"><b>$!lang.get('apply')</b></button>
+			</div>
+		</div>
+	#end
+	<hr>
+
+	#if(!$userlist || $userlist.isEmpty())
+		<div class="card-panel hugeText center-align grey-text">
+			<div class="em5v">
+				$!{lang.get("search.notfound")}
+			</div>
+		</div>
+	#else
+		<div class="row">
+			#paginate("people" $itemcount "" "page")
+		</div>
+	#end
+
+	#if($isAdmin && $request.getParameter("bulkedit"))
+	</form>
+	#end
+</div>
