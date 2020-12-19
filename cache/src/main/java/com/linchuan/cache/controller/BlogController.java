@@ -1,8 +1,8 @@
 package com.linchuan.cache.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.gson.Gson;
 import com.linchuan.cache.bean.Blog;
 import com.linchuan.cache.service.BlogService;
 import org.springframework.cache.annotation.CacheEvict;
@@ -11,14 +11,17 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
 public class BlogController {
+  private final Gson gson;
   private final BlogService blogService;
   private final ObjectMapper objectMapper;
 
-  public BlogController(BlogService blogService, ObjectMapper objectMapper) {
+  public BlogController(Gson gson, BlogService blogService, ObjectMapper objectMapper) {
+    this.gson = gson;
     this.blogService = blogService;
     this.objectMapper = objectMapper;
   }
@@ -69,7 +72,21 @@ public class BlogController {
   }
 
   @GetMapping("/blog")
-  @Cacheable("blogs")
+  @Cacheable(value = "blogs", key = "")
+  public String getBlogs() {
+    List<Blog> blogs = blogService.findBlogs(true, 0);
+    var rlt = new HashMap<String, Object>();
+    if (blogs == null) {
+      rlt.put("code", -1);
+      rlt.put("message", "can't find any blog");
+    } else {
+      rlt.put("code", 0);
+      rlt.put("message", "ok");
+    }
+    rlt.put("blogs", blogs);
+    return gson.toJson(rlt);
+  }
+  /*
   public ObjectNode getBlogs() {
     List<Blog> blogs = blogService.findBlogs(true, 0);
     // return blogs;
@@ -86,7 +103,7 @@ public class BlogController {
     }
     rlt.putArray("blogs").addAll(list);
     return rlt;
-  }
+  }*/
 
   @PostMapping("/blog")
   @CacheEvict(value = "blogs", allEntries = true)
