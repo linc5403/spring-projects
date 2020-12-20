@@ -12,12 +12,12 @@ import java.time.Duration;
 import java.util.List;
 
 @Service
-public class RedisService {
+public class RedisValueService {
   private final RedisTemplate<String, String> redisTemplate;
 
   private final Gson gson;
 
-  public RedisService(RedisTemplate<String, String> redisTemplate, Gson gson) {
+  public RedisValueService(RedisTemplate<String, String> redisTemplate, Gson gson) {
     this.redisTemplate = redisTemplate;
     this.gson = gson;
   }
@@ -43,8 +43,10 @@ public class RedisService {
 
   public void setBlogs(List<Blog> blogs) {
     String key = "blogs";
-    var ops = redisTemplate.boundValueOps(key);
-    ops.set(gson.toJson(blogs));
+    var ops = redisTemplate.boundListOps(key);
+
+    //    var ops = redisTemplate.boundValueOps(key);
+    //    ops.set(gson.toJson(blogs));
   }
 
   public List<Blog> getBlogs() {

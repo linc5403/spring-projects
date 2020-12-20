@@ -18,7 +18,7 @@ public class BlogService {
     this.blogDao = blogDao;
   }
 
-  @Autowired private RedisService redisService;
+  @Autowired private RedisValueService redisValueService;
 
   @Cacheable(value = "blog", key = "{#findAll,#id}")
   public List<Blog> findBlogs(Boolean findAll, Integer id) {
@@ -31,13 +31,13 @@ public class BlogService {
       // 查找blog
       // DB之前先访问Cache, 如果Cache有了, 直接用
       Blog blog;
-      blog = redisService.getBlogFromCache(id);
+      blog = redisValueService.getBlogFromCache(id);
       if (blog == null) {
         // db
         System.out.println("using db.....");
         blog = blogDao.findBlogById(id);
         // save to cache
-        redisService.setBlogToCache(blog);
+        redisValueService.setBlogToCache(blog);
       }
       rlt.add(blog);
     }
@@ -54,7 +54,7 @@ public class BlogService {
   }
 
   public Integer updateBlog(Blog blog) {
-    redisService.removeBlogInCache(blog.getId());
+    redisValueService.removeBlogInCache(blog.getId());
     try {
       blogDao.updateBlog(blog);
       return 0;

@@ -125,6 +125,7 @@ public class BlogController {
       rlt.put("code", id);
       rlt.put("message", "ok");
     }
+
     return rlt;
   }
 }
